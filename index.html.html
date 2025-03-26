@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Difsy & Dilsah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+        }
+        .start {
+            background-color: green;
+        }
+        .stop {
+            background-color: red;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 18px;
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ada Pesan Untukmu Dilsah 😃</h1>
+    <button class="start" onclick="startListening()">Mulai Mendengar 🎤</button>
+    <button class="stop" onclick="stopListening()">Berhenti ❌</button>
+    <p id="output">Ucapkan perintah...</p>
+
+    <script>
+        const output = document.getElementById("output");
+
+        // Cek apakah browser mendukung SpeechRecognition API
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!window.SpeechRecognition) {
+            alert("Browser Anda tidak mendukung Speech Recognition.");
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = "id-ID"; // Bahasa Indonesia
+        recognition.interimResults = false;
+        recognition.continuous = true;
+
+        // Saat mendengar perintah suara
+        recognition.onresult = function(event) {
+            const command = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+            output.innerText = `Anda berkata: "${command}"`;
+
+            processCommand(command);
+        };
+
+        // Fungsi untuk memproses perintah suara
+        function processCommand(command) {
+            if (command.includes("scroll up") || command.includes("lala")) {
+                window.scrollBy(0, -300);
+                speakText("aku kasih resep Cimol Kopong Pedas Gurih yaitu camilan renyah yang enak buat ngemil santai bahan bahanya adalah 250 gram tepung tapioca 50 gram tepung terigu 1 sendok teh garam 1/2 sendok teh kaldu bubuk 1/2 sendok teh lada bubuk 1 batang daun bawang (iris halus) 2 siung bawang putih (haluskan) 200 ml air panas Minyak untuk menggoreng lalu Bumbu Tabur opsional Bubuk cabai Bubuk keju Bubuk BBQ Cara Membuat Campurkan tepung tapioka, tepung terigu, garam, kaldu bubuk, lada bubuk, bawang putih halus, dan daun bawang dalam satu wadah Tuangkan air panas sedikit demi sedikit, aduk menggunakan spatula hingga hangat, lalu uleni dengan tangan sampai adonan bisa dipulung. Bentuk adonan menjadi bulatan kecil-kecil. Panaskan minyak dengan api kecil, lalu masukkan cimol saat minyak masih hangat (bukan panas).Aduk terus agar cimol tidak meledak dan goreng hingga mengembang serta kopong.Angkat, tiriskan, dan taburi dengan bumbu favoritmu.");
+            } else if (command.includes("scroll down") || command.includes("fadil")) {
+                window.scrollBy(0, 300);
+                speakText("I love You Nengku.");
+            } else if (command.includes("go to") || command.includes("buka")) {
+                let site = command.replace("go to", "").replace("buka", "").trim();
+                if (!site.includes(".")) site += ".com";
+                speakText(`Membuka ${site}`);
+                window.open(`https://${site}`, "_blank");
+            } else if (command.includes("stop listening") || command.includes("berhenti mendengar")) {
+                stopListening();
+                speakText("Penghentian perintah suara.");
+            } else {
+                speakText("");
+            }
+        }
+
+        // Fungsi untuk mulai mendengar perintah suara
+        function startListening() {
+            recognition.start();
+            output.innerText = "Mendengarkan... 🎧";
+        }
+
+        // Fungsi untuk berhenti mendengar
+        function stopListening() {
+            recognition.stop();
+            output.innerText = "Berhenti mendengar.";
+        }
+
+        // Fungsi untuk membaca teks menggunakan Text-to-Speech
+        function speakText(text) {
+            const speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "id-ID";
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+
+</body>
+</html>
